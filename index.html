@@ -1,0 +1,113 @@
+<!doctype html>
+<html>
+<head>
+	<title>API Fun</title>
+	<meta charset="utf-8"/>
+	<style>
+		table {
+  			width: 100%;
+			border: 1px solid;
+		}
+		th, td {
+  			border: 1px solid;
+			width: 50%;
+			font-weight: normal;
+		}
+		body {
+			text-align: center;
+			font-family: Arial;
+		)
+
+	</style>
+	<script>
+		function getWeather() {
+		/* Step 1: Make instance of request object to make HTTP request after page is loaded*/
+			request = new XMLHttpRequest();
+			console.log("1 - request object created");
+ 
+			// Step 2: Set the URL for the AJAX request to be the JSON file
+			request.open("GET", "https://weatherdbi.herokuapp.com/data/weather/{boston}", true)
+			console.log("2 - opened request file");
+ 
+			// Step 3: set up event handler/callback
+			request.onreadystatechange = function() {
+				console.log("3 - readystatechange event fired.");
+				if (request.readyState == 4 && request.status == 200) {
+
+					// Step 5: wait for done + success
+					console.log("5 - response received");
+					result = request.responseText;
+					weather = JSON.parse(result);
+					cur_weather = weather["currentConditions"];
+					temp = "Temperature: " + cur_weather["temp"]["f"] + " &degF<br>";
+					precip = "Precipitation: " + cur_weather["precip"] + "<br>";
+					humidity = "Humidity: " + cur_weather["humidity"] + "<br>";
+					wind = "Wind: " + cur_weather["wind"]["mile"] + "mph<br>";
+					icon = "<img src=" + weather["currentConditions"]["iconURL"] + "><br>";
+					document.getElementById("get").innerHTML = temp + precip + humidity + wind + icon; 	
+				}
+				else if (request.readyState == 4 && request.status != 200) {
+					document.getElementById("get").innerHTML = "Something went wrong";
+				}
+				else if (request.readyState == 3) {
+					document.getElementById("get").innerHTML = "Too soon, try again";
+				}
+			}
+		
+			// Step 4: fire off the HTTP request
+			request.send();
+			console.log("4 - Request sent");
+
+
+			// Step 5: use fetch to complete same API call
+			res = fetch("https://weatherdbi.herokuapp.com/data/weather/{boston}")
+			.then (res => res.text())
+			.then (data => {
+   				data = JSON.parse(data)
+    				cur_weather = data.currentConditions;
+				temp = "Temperature: " + cur_weather.temp.f + " &degF<br>";
+				precip = "Precipitation: " + cur_weather.precip + "<br>";
+				humidity = "Humidity: " + cur_weather.humidity + "<br>";
+				wind = "Wind: " + cur_weather.wind.mile + "mph<br>";
+				icon = "<img src=" + weather.currentConditions.iconURL + "><br>";
+       				document.getElementById("fetch").innerHTML = temp + precip + humidity + wind + icon;
+   				})
+			.catch (error => console.log(error))
+		}
+	</script>
+</head>
+<body onload="getWeather()">
+	<h1>Weather in Boston, MA</h1>
+
+	<table>
+		<tr>
+    			<th><b>AJAX Get Request Method</b></th>
+    			<th><b>Fetch Method</b></th>
+  		</tr>
+  		<tr>
+    			<th id="get">Loading...</th>
+    			<th id="fetch">Loading..</th>
+  		</tr>
+  		<tr>
+    			<th>AJAX or asynchronous operations within javaScript fetches data asynchronously from a web server without needing to refresh the page. To use AJAX to get data from an API you create a HttpRequest object, use "GET" for data retrieval and display the info.</th>
+    			<th>The function fetch() uses the same elements of an XMLHttpRequest but consolidates them in order to make retrieving and displaying data from an API easier.</th>
+  		</tr>
+	</table>
+
+	<br><br>
+
+	<table>
+		<tr>
+    			<th><b>API</b></th>
+			<th>The WeatherDB API provides weather information for free including hourly temperature forecasts, the precipitation forecast, and historical data on specified locations</th>
+  		</tr>
+    			<th><b>Source</b></th>
+			<th><a href="https://weatherdbi.herokuapp.com/documentation/v1" target="_blank">https://weatherdbi.herokuapp.com</th>
+  		</tr>
+  		</tr>
+    			<th><b>Use Cases</b></th>
+			<th>This API could be used in any site where weather isn't the main information conveyed on the site so accuracy of forecasts is only important to the hourly degree that WeatherDb provides. An example of this is for a site for a national park or camp ground that wants to provide potential visitors information on the weather at the park. Another use case is for a website that provides travel recommendations and wants to show users current weather data at potential travel destinations. </th>
+  		</tr>
+	</table>
+</body>
+</html>

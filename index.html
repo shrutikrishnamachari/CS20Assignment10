@@ -26,7 +26,7 @@
 			console.log("1 - request object created");
  
 			// Step 2: Set the URL for the AJAX request to be the JSON file
-			request.open("GET", "https://weatherdbi.herokuapp.com/data/weather/{boston}", true)
+			request.open("GET", "http://api.weatherapi.com/v1/current.json?key=f3daa44e4264438fa8a154020220704&q=Boston&aqi=no", true)
 			console.log("2 - opened request file");
  
 			// Step 3: set up event handler/callback
@@ -38,12 +38,12 @@
 					console.log("5 - response received");
 					result = request.responseText;
 					weather = JSON.parse(result);
-					cur_weather = weather["currentConditions"];
-					temp = "Temperature: " + cur_weather["temp"]["f"] + " &degF<br>";
-					precip = "Precipitation: " + cur_weather["precip"] + "<br>";
+					cur_weather = weather["current"];
+					temp = "Temperature: " + cur_weather["temp_f"] + " &degF<br>";
+					precip = "Precipitation: " + cur_weather["precip_in"] + "in<br>";
 					humidity = "Humidity: " + cur_weather["humidity"] + "<br>";
-					wind = "Wind: " + cur_weather["wind"]["mile"] + "mph<br>";
-					icon = "<img src=" + weather["currentConditions"]["iconURL"] + "><br>";
+					wind = "Wind: " + cur_weather["wind_mph"] + "mph<br>";
+					icon = "<img src=" + "https:" + weather["current"]["condition"]["icon"] + "><br>";
 					document.getElementById("get").innerHTML = temp + precip + humidity + wind + icon; 	
 				}
 				else if (request.readyState == 4 && request.status != 200) {
@@ -60,16 +60,16 @@
 
 
 			// Step 5: use fetch to complete same API call
-			res = fetch("https://weatherdbi.herokuapp.com/data/weather/{boston}")
+			res = fetch("http://api.weatherapi.com/v1/current.json?key=f3daa44e4264438fa8a154020220704&q=Boston&aqi=no")
 			.then (res => res.text())
 			.then (data => {
    				data = JSON.parse(data)
-    				cur_weather = data.currentConditions;
-				temp = "Temperature: " + cur_weather.temp.f + " &degF<br>";
-				precip = "Precipitation: " + cur_weather.precip + "<br>";
+    				cur_weather = data.current;
+				temp = "Temperature: " + cur_weather.temp_f + " &degF<br>";
+				precip = "Precipitation: " + cur_weather.precip_in + "in<br>";
 				humidity = "Humidity: " + cur_weather.humidity + "<br>";
-				wind = "Wind: " + cur_weather.wind.mile + "mph<br>";
-				icon = "<img src=" + weather.currentConditions.iconURL + "><br>";
+				wind = "Wind: " + cur_weather.wind_mph + "mph<br>";
+				icon = "<img src=" + "https:"+ data.current.condition.icon + "><br>";
        				document.getElementById("fetch").innerHTML = temp + precip + humidity + wind + icon;
    				})
 			.catch (error => console.log(error))
@@ -99,14 +99,14 @@
 	<table>
 		<tr>
     			<th><b>API</b></th>
-			<th>The WeatherDB API provides weather information for free including hourly temperature forecasts, the precipitation forecast, and historical data on specified locations</th>
+			<th>The Weather API provides weather information for free including hourly temperature forecasts, the precipitation forecast, and historical data on specified locations</th>
   		</tr>
     			<th><b>Source</b></th>
-			<th><a href="https://weatherdbi.herokuapp.com/documentation/v1" target="_blank">https://weatherdbi.herokuapp.com</th>
+			<th><a href="https://www.weatherapi.com/" target="_blank">https://www.weatherapi.com/</th>
   		</tr>
   		</tr>
     			<th><b>Use Cases</b></th>
-			<th>This API could be used in any site where weather isn't the main information conveyed on the site so accuracy of forecasts is only important to the hourly degree that WeatherDb provides. An example of this is for a site for a national park or camp ground that wants to provide potential visitors information on the weather at the park. Another use case is for a website that provides travel recommendations and wants to show users current weather data at potential travel destinations. </th>
+			<th>This API could be used in any site where weather isn't the main information conveyed on the site so accuracy of forecasts is only important to the lesser degree that www.weatherapi.com provides. An example of this is for a site for a national park or camp ground that wants to provide potential visitors information on the weather at the park. Another use case is for a website that provides travel recommendations and wants to show users current weather data at potential travel destinations. </th>
   		</tr>
 	</table>
 </body>

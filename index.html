@@ -26,7 +26,7 @@
 			console.log("1 - request object created");
  
 			// Step 2: Set the URL for the AJAX request to be the JSON file
-			request.open("GET", "http://api.weatherapi.com/v1/current.json?key=f3daa44e4264438fa8a154020220704&q=Boston&aqi=no", true)
+			request.open("GET", "https://api.weatherapi.com/v1/current.json?key=f3daa44e4264438fa8a154020220704&q=Boston&aqi=no", true)
 			console.log("2 - opened request file");
  
 			// Step 3: set up event handler/callback
@@ -60,7 +60,7 @@
 
 
 			// Step 5: use fetch to complete same API call
-			res = fetch("http://api.weatherapi.com/v1/current.json?key=f3daa44e4264438fa8a154020220704&q=Boston&aqi=no")
+			res = fetch("https://api.weatherapi.com/v1/current.json?key=f3daa44e4264438fa8a154020220704&q=Boston&aqi=no")
 			.then (res => res.text())
 			.then (data => {
    				data = JSON.parse(data)
